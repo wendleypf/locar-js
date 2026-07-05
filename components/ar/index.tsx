@@ -53,7 +53,7 @@ export default function Ar() {
                             );
                         }
                     }
-                    setFirstLocation((old: boolean): boolean => !old)
+                    setFirstLocation(true);
                 });
                 await locar.startGps();
             } catch (e: unknown) {
