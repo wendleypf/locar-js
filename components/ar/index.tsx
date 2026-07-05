@@ -26,6 +26,9 @@ export default function Ar() {
                 transparent: true,
             })
         );
+        marker.userData = {
+            url: "https://www.google.com"
+        }
 
         marker.scale.set(8, 8, 1);
 
@@ -113,6 +116,27 @@ export default function Ar() {
 
                     }
                     setFirstLocation(true);
+                });
+                const raycaster = new THREE.Raycaster();
+                const pointer = new THREE.Vector2();
+
+                canvaRef.current.addEventListener("click", (event) => {
+                    const rect = canvaRef.current!.getBoundingClientRect();
+
+                    pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+                    pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+                    raycaster.setFromCamera(pointer, locar.camera);
+
+                    const intersects = raycaster.intersectObjects(locar.scene.children, true);
+
+                    if (intersects.length > 0) {
+                        const obj = intersects[0].object;
+
+                        if (obj.userData.url) {
+                            window.open(obj.userData.url, "_blank");
+                        }
+                    }
                 });
                 await locar.startGps();
             } catch (e: unknown) {
