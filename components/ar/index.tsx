@@ -22,20 +22,20 @@ export default function Ar() {
                 locar.on('gpsupdate', (event: GpsReceivedEvent): void => {
                     if (firstLocation) {
                         const boxProps = [{
-                            latDis: 0.000020,
+                            latDis: 0.000100,
                             lonDis: 0,
                             colour: 0xff0000
                         }, {
-                            latDis: -0.000020,
+                            latDis: -0.000100,
                             lonDis: 0,
                             colour: 0xffff00
                         }, {
                             latDis: 0,
-                            lonDis: -0.000020,
+                            lonDis: -0.000100,
                             colour: 0x00ffff
                         }, {
                             latDis: 0,
-                            lonDis: 0.000020,
+                            lonDis: 0.000100,
                             colour: 0x00ff00
                         }];
                         const geom = new THREE.BoxGeometry(10,10,10);
