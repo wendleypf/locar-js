@@ -15,7 +15,7 @@ export default function Ar() {
         map: texture,
         transparent: true,
     });
-    const geometry = new THREE.PlaneGeometry(10, 10);
+    const geometry = new THREE.PlaneGeometry(20, 20);
 
 
     React.useEffect(() => {
@@ -61,7 +61,7 @@ export default function Ar() {
                             const sprite = new THREE.Sprite(material);
                             sprite.scale.set(10, 10, 1);
                             locar.add(
-                                sprite,
+                                mesh,
                                 event.position.coords.longitude + boxProp.lonDis,
                                 event.position.coords.latitude + boxProp.latDis
                             );
