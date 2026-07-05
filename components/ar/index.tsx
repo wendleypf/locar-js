@@ -10,7 +10,7 @@ export default function Ar() {
     const [firstLocation, setFirstLocation] = React.useState(true);
 
     const textureLoader = new THREE.TextureLoader();
-    const texture = textureLoader.load('/marker.png');
+    const texture = textureLoader.load('/map-marker.png');
     const material = new THREE.SpriteMaterial({
         map: texture,
         transparent: true,
