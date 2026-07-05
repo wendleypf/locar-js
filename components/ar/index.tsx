@@ -9,6 +9,15 @@ export default function Ar() {
     const canvaRef = React.useRef<HTMLCanvasElement>(null);
     const [firstLocation, setFirstLocation] = React.useState(true);
 
+    const textureLoader = new THREE.TextureLoader();
+    const texture = textureLoader.load('/marker.png');
+    const material = new THREE.SpriteMaterial({
+        map: texture,
+        transparent: true,
+    });
+    const geometry = new THREE.PlaneGeometry(10, 10);
+
+
     React.useEffect(() => {
         const initLocar = async () => {
             if (!canvaRef.current) {
@@ -17,34 +26,32 @@ export default function Ar() {
             try {
                 const locar = await locAr(canvaRef.current);
                 locar.on('gpserror', (error: GeolocationPositionError): void => {
-                    console.log(`GPS error: ${error.code}`);
+                    console.log(`${error.code}`);
                 });
                 locar.on('gpsupdate', (event: GpsReceivedEvent): void => {
                     if (firstLocation) {
                         const boxProps = [{
-                            latDis: 0.000100,
+                            latDis: 0.0005,
                             lonDis: 0,
                             colour: 0xff0000
                         }, {
-                            latDis: -0.000100,
+                            latDis: -0.0005,
                             lonDis: 0,
                             colour: 0xffff00
                         }, {
                             latDis: 0,
-                            lonDis: -0.000100,
+                            lonDis: -0.0005,
                             colour: 0x00ffff
                         }, {
                             latDis: 0,
-                            lonDis: 0.000100,
+                            lonDis: 0.0005,
                             colour: 0x00ff00
                         }];
-                        const geom = new THREE.BoxGeometry(10,10,10);
 
                         for(const boxProp of boxProps) {
-                            const mesh = new THREE.Mesh(
-                                geom,
-                                new THREE.MeshBasicMaterial({color: boxProp.colour})
-                            );
+                            const mesh = new THREE.Mesh(geometry, material);
+                            const sprite = new THREE.Sprite(material);
+                            sprite.scale.set(10, 10, 1);
 
                             locar.add(
                                 mesh,
@@ -52,6 +59,7 @@ export default function Ar() {
                                 event.position.coords.latitude + boxProp.latDis
                             );
                         }
+
                     }
                     setFirstLocation(true);
                 });
@@ -61,7 +69,7 @@ export default function Ar() {
             }
         }
         initLocar().then();
-    }, [firstLocation]);
+    }, [firstLocation, geometry, material]);
 
     return (<div ref={arRef} className='w-screen h-screen'>
         <canvas ref={canvaRef}></canvas>
