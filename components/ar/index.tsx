@@ -17,6 +17,49 @@ export default function Ar() {
     });
     const geometry = new THREE.PlaneGeometry(20, 20);
 
+    function createMarker(title: string, distance: string) {
+        const group = new THREE.Group();
+
+        const marker = new THREE.Sprite(
+            new THREE.SpriteMaterial({
+                map: texture,
+                transparent: true,
+            })
+        );
+
+        marker.scale.set(8, 8, 1);
+
+        const canvas = document.createElement('canvas');
+        canvas.width = 512;
+        canvas.height = 128;
+
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = 'rgba(0,0,0,0.7)';
+        ctx.fillRect(0, 0, 512, 128);
+
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 42px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(title, 256, 55);
+
+        ctx.font = '30px Arial';
+        ctx.fillText(distance, 256, 100);
+
+        const label = new THREE.Sprite(
+            new THREE.SpriteMaterial({
+                map: new THREE.CanvasTexture(canvas),
+                transparent: true,
+            })
+        );
+
+        label.scale.set(15, 4, 1);
+        label.position.y = 7;
+
+        group.add(marker);
+        group.add(label);
+
+        return group;
+    }
 
     React.useEffect(() => {
         const initLocar = async () => {
@@ -59,9 +102,10 @@ export default function Ar() {
                             );
 
                             const sprite = new THREE.Sprite(material);
-                            sprite.scale.set(10, 10, 1);
+                            sprite.scale.set(20, 20, 1);
+                            const poi = createMarker("Museu Afro", "150 m");
                             locar.add(
-                                mesh,
+                                poi,
                                 event.position.coords.longitude + boxProp.lonDis,
                                 event.position.coords.latitude + boxProp.latDis
                             );
@@ -77,6 +121,7 @@ export default function Ar() {
         }
         initLocar().then();
     }, [firstLocation]);
+
 
     return (<div ref={arRef} className='w-screen h-screen'>
         <canvas ref={canvaRef}></canvas>
