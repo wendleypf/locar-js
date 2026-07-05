@@ -1,4 +1,4 @@
-import {App, LocAR} from "locar";
+import {App} from "locar";
 
 export const locAr = (canvas: HTMLCanvasElement) => {
     const app = new App({
