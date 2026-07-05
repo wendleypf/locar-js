@@ -8,7 +8,6 @@ export default function Ar() {
     const arRef = React.useRef(null);
     const canvaRef = React.useRef<HTMLCanvasElement>(null);
     const [firstLocation, setFirstLocation] = React.useState(true);
-    const initialized = React.useRef(false);
 
     const textureLoader = new THREE.TextureLoader();
     const texture = textureLoader.load('/map-marker.png');
@@ -67,20 +66,16 @@ export default function Ar() {
 
     React.useEffect(() => {
         const initLocar = async () => {
-            if (initialized.current) {
-                return;
-            }
             if (!canvaRef.current) {
                 return;
             }
-            initialized.current = true;
             try {
                 const locar = await locAr(canvaRef.current);
                 locar.on('gpserror', (error: GeolocationPositionError): void => {
                     console.log(`${error.code}`);
                 });
                 locar.on('gpsupdate', (event: GpsReceivedEvent): void => {
-                    // if (firstLocation) {
+                    if (firstLocation) {
                         const boxProps = [{
                             latDis: 0.0005,
                             lonDis: 0,
@@ -119,8 +114,8 @@ export default function Ar() {
                             );
                         }
 
-                    // }
-                    // setFirstLocation(true);
+                        setFirstLocation(true);
+                    }
                 });
                 const raycaster = new THREE.Raycaster();
                 const pointer = new THREE.Vector2();
