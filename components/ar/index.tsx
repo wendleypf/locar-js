@@ -49,12 +49,19 @@ export default function Ar() {
                         }];
 
                         for(const boxProp of boxProps) {
-                            const mesh = new THREE.Mesh(geometry, material);
+                            const mesh = new THREE.Mesh(
+                                geometry,
+                                new THREE.MeshBasicMaterial({
+                                    map: texture,
+                                    transparent: true,
+                                    side: THREE.DoubleSide,
+                                })
+                            );
+
                             const sprite = new THREE.Sprite(material);
                             sprite.scale.set(10, 10, 1);
-
                             locar.add(
-                                mesh,
+                                sprite,
                                 event.position.coords.longitude + boxProp.lonDis,
                                 event.position.coords.latitude + boxProp.latDis
                             );
@@ -69,7 +76,7 @@ export default function Ar() {
             }
         }
         initLocar().then();
-    }, [firstLocation, geometry, material]);
+    }, [firstLocation]);
 
     return (<div ref={arRef} className='w-screen h-screen'>
         <canvas ref={canvaRef}></canvas>
