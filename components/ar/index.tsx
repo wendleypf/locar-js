@@ -88,17 +88,17 @@ export default function Ar() {
                 markersCreated.current = true;
 
                 const markers = [
-                    { lat: 0.005, lon: 0 },
+                    { lat: 0.00005, lon: 0 },
                     { lat: -0.0005, lon: 0 },
                     { lat: 0, lon: -0.0005 },
-                    { lat: 0, lon: 0.005 },
+                    { lat: 0, lon: 0.00005 },
                 ];
 
                 markers.forEach((m, index) => {
 
                     const poi = createMarker(
                         `Museu ${index + 1}`,
-                        '5 m'
+                        '150 m'
                     );
 
                     locar.add(
@@ -149,7 +149,7 @@ export default function Ar() {
 
         init().then();
 
-        return (): void => {
+        return () => {
             if (canvasRef.current && clickHandler) {
                 canvasRef.current.removeEventListener(
                     'click',
